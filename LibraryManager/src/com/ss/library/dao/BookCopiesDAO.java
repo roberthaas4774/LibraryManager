@@ -40,17 +40,12 @@ public class BookCopiesDAO extends BaseDAO<BookCopies>{
 	}
 	
 	public List<BookCopies> readAllBookCopies() throws ClassNotFoundException, SQLException{
-		return read("select * from library.tbl_book_copies", null);
+		return read("select * from library.tbl_book_copies natural join library.tbl_book natural join library.tbl_library_branch", null);
 	}
 
-	public List<BookCopies> readBookCopiesByBranchId(int l) throws ClassNotFoundException, SQLException{
+	public List<BookCopies> readAvailableCopiesInBranch(int l) throws ClassNotFoundException, SQLException{
 		return read("select * from library.tbl_book_copies natural join library.tbl_book natural join library.tbl_library_branch"
-				+ " where branchId = ?", new Object[] {l});
-	}
-	
-	public List<BookCopies> readBookCopiesByBookId(int b) throws ClassNotFoundException, SQLException{
-		return read("select * from library.tbl_book_copies natural join library.tbl_book natural join library.tbl_library_branch"
-				+ " where bookId = ?", new Object[] {b});
+				+ " where branchId = ? and noOfCopies > 0", new Object[] {l});
 	}
 	
 	public List<BookCopies> readBookCopiesById(Book book, LibraryBranch libBranch) throws ClassNotFoundException, SQLException{

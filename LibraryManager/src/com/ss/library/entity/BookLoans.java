@@ -18,7 +18,6 @@ public class BookLoans {
 	private Date dateOut;
 	private Date dateDue;
 	private Date dateIn;
-	
 	/**
 	 * @return the book
 	 */
@@ -91,4 +90,5 @@ public class BookLoans {
 	public void setDateIn(Date dateIn) {
 		this.dateIn = dateIn;
 	}
+	
 }

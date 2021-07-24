@@ -5,6 +5,7 @@ package com.ss.library.controller;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ss.library.entity.LibraryBranch;
 import com.ss.library.service.Librarian;
@@ -18,35 +19,38 @@ public class BaseController {
 	static Scanner scan = new Scanner(System.in);
 	
 	public static LibraryBranch printLibBranchList(){
-		System.out.println("-------------------------------------------------\n");
+		System.out.println("Please enter the number of the Branch from the list");
+		
 		Librarian<LibraryBranch> lib = new Librarian<LibraryBranch>();
 		List<LibraryBranch> list = null;
+		AtomicInteger counter = new AtomicInteger();
+		
 		try {
 			list = lib.readLibraryBranch();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		list.forEach(l -> {
-			System.out.println(l.getBranchID() + ") " + l.getBranchName());
+		list.forEach(branch -> {
+			counter.getAndIncrement();
+			System.out.println(counter + ") " + branch.getBranchName());
 		});
 		
 		int num = list.size() + 1;
 		System.out.println(num + ") Quit to previous\n");
 
-		System.out.println("Please enter the number of the Branch from the list above");
-
 		int choice = BaseController.getInt(num);
-
 		if (choice == num) {
 			return null;
 		}
 		
 		else {
-			for (LibraryBranch l : list) {
-				if (l.getBranchID() == choice) {
-					return l;
+			int i = 1;
+			for (LibraryBranch branch : list) {
+				if (i == choice) {
+					return branch;
 				}
+				i++;
 			}
 		}
 		

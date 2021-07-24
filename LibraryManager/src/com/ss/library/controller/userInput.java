@@ -53,7 +53,7 @@ public class userInput {
 			break;
 		}
 		
-		System.out.println("Goodbye");
+//		System.out.println("Goodbye");
 		BaseController.close();
 		scan.close();
 	}

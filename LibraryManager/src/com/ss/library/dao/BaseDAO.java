@@ -56,7 +56,6 @@ public abstract class BaseDAO<T> {
 				count++;
 			}
 		}
-
 		ResultSet rs = pstmt.executeQuery();
 		return extractData(rs);
 	}

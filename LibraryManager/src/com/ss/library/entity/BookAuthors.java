@@ -10,7 +10,7 @@ package com.ss.library.entity;
 public class BookAuthors {
 	
 	private Book book;
-	private LibraryBranch library;
+	private Author author;
 	/**
 	 * @return the book
 	 */
@@ -24,15 +24,15 @@ public class BookAuthors {
 		this.book = book;
 	}
 	/**
-	 * @return the library
+	 * @return the author
 	 */
-	public LibraryBranch getLibrary() {
-		return library;
+	public Author getAuthor() {
+		return author;
 	}
 	/**
-	 * @param library the library to set
+	 * @param author the author to set
 	 */
-	public void setLibrary(LibraryBranch library) {
-		this.library = library;
+	public void setAuthor(Author author) {
+		this.author = author;
 	}
 }

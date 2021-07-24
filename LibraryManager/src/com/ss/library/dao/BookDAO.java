@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ss.library.entity.Book;
+import com.ss.library.entity.BookLoans;
 import com.ss.library.entity.LibraryBranch;
 import com.ss.library.entity.Publisher;
 
@@ -30,6 +31,10 @@ public class BookDAO extends BaseDAO<Book>{
 	
 	public List<Book> readBooksByID(Book book) throws ClassNotFoundException, SQLException{
 		return read("select * from library.tbl_book where bookId = ?", new Object[] {book.getBookID()});
+	}
+	
+	public List<Book> readBookLoanByPerson(int cardNo) throws ClassNotFoundException, SQLException{
+		return read("select  from library.tbl_book_loans natural join library.tbl_book where cardNo = ?", new Object[] {cardNo});
 	}
 
 	@Override

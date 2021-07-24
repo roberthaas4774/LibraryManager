@@ -5,6 +5,7 @@ package com.ss.library.controller;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ss.library.entity.Book;
 import com.ss.library.entity.BookCopies;
@@ -64,15 +65,13 @@ public class LibraryInput {
 				+ "1) Update the details of the Library\n2) Add copies of Book to the Branch\n"
 				+ "3) Quit to previous\n4) Close application");
 
-		int num = BaseController.getInt(4);
-		switch (num) {
+		switch (BaseController.getInt(4)) {
 		case 0:
 			System.out.println("Incorrect input\n");
 			lib3(l);
 			break;
 		case 1:
 			System.out.println();
-			scan.nextLine();
 			lib3Op1(l);
 			break;
 		case 2:
@@ -118,10 +117,12 @@ public class LibraryInput {
 	}
 
 	public static void lib3Op2(LibraryBranch l) {
-		System.out.println("-------------------------------------------------\n");
+		System.out.println("Pick the Book you want to add copies of to your branch. Please input the number of the book");
 		
 		Librarian<Book> book = new Librarian<Book>();
 		List<Book> bookList = null;
+		AtomicInteger counter = new AtomicInteger();
+		
 		try {
 			bookList = book.readBook();
 		} catch (Exception e1) {
@@ -129,14 +130,13 @@ public class LibraryInput {
 			e1.printStackTrace();
 		}
 		bookList.forEach(b -> {
-			System.out.println(b.getBookID() + ") " + b.getTitle());
+			counter.getAndIncrement();
+			System.out.println(counter + ") " + b.getTitle());
 		});
 
 		int num = bookList.size() + 1;
 		int quit = num + 1;
-		System.out.println(num + ") Quit to previous\n" + quit + ") Close application\n");
-		System.out.println(
-				"Pick the Book you want to add copies of to your branch from the list above. Please input the number of the book");
+		System.out.println(num + ") Quit to previous\n");
 
 		int choice = BaseController.getInt(quit);
 
@@ -145,19 +145,16 @@ public class LibraryInput {
 			lib3(l);
 		}
 		
-		else if (choice == quit) {
-			return;
-		}
-		
 		else {
-			bookList.forEach(b -> {
-				if (choice == b.getBookID()) {
-					System.out.println();
+			int i = 1;
+			for (Book b : bookList) {
+				if (i == choice) {
 					copies(l, b);
+					break;
 				}
-			});
+				i++;
+			}
 		}
-
 	}
 	
 	public static void copies(LibraryBranch l, Book b) {
@@ -212,6 +209,7 @@ public class LibraryInput {
 			System.out.println("That was not a valid input. Could not add copies of the book to the branch");
 		}
 		
+		System.out.println();
 		lib3(l);
 	}
 }
