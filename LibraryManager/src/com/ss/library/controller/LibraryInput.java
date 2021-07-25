@@ -130,8 +130,7 @@ public class LibraryInput {
 			e1.printStackTrace();
 		}
 		bookList.forEach(b -> {
-			counter.getAndIncrement();
-			System.out.println(counter + ") " + b.getTitle());
+			System.out.println(counter.incrementAndGet() + ") " + b.getTitle());
 		});
 
 		int num = bookList.size() + 1;

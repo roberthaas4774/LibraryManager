@@ -64,6 +64,7 @@ public class BookCopiesDAO extends BaseDAO<BookCopies>{
 			
 			book.setBookID(rs.getInt("bookId"));
 			book.setTitle(rs.getString("title"));
+			book.setPubID(rs.getInt("pubId"));
 			bc.setBook(book);
 			
 			lib.setBranchID(rs.getInt("branchId"));

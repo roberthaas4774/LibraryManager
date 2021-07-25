@@ -22,15 +22,15 @@ public abstract class BaseDAO<T> {
 	}
 	
 	public Integer saveReturnPK(String sql, Object[] vals) throws ClassNotFoundException, SQLException {
-		PreparedStatement pstmt = conn.prepareStatement(sql, Statement.NO_GENERATED_KEYS);
+		PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		int count = 1;
 		for(Object o : vals) {
 			pstmt.setObject(count, o);
 			count++;
 		}
 		pstmt.executeUpdate();
-//		ResultSet rs = pstmt.getGeneratedKeys(); // Try this or below
-		ResultSet rs = pstmt.executeQuery();
+		ResultSet rs = pstmt.getGeneratedKeys(); // Try this or below
+//		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
 			return rs.getInt(1); // This is either 1 or 0
 		}

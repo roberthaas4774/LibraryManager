@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ss.library.entity.Book;
-import com.ss.library.entity.BookCopies;
 import com.ss.library.entity.BookLoans;
 import com.ss.library.entity.Borrower;
 import com.ss.library.entity.LibraryBranch;
@@ -72,6 +71,7 @@ public class BookLoansDAO extends BaseDAO<BookLoans>{
 			
 			book.setBookID(rs.getInt("bookId"));
 			book.setTitle(rs.getString("title"));
+			book.setPubID(rs.getInt("pubId"));
 			bl.setBook(book);
 			
 			lib.setBranchID(rs.getInt("branchId"));
