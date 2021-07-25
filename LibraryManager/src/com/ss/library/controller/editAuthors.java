@@ -79,25 +79,22 @@ public class editAuthors {
 		System.out.println(quit + ") Quit to previous");
 		auth = BaseController.getInt(quit);
 		
-		if (auth == quit) {
-			func(AdminInput.getFunc());
-		}
-		
-		for (Author a : authorList) {
-			if (auth == i) {
-				bookAuthor = a;
+		if (auth != quit) {
+			for (Author a : authorList) {
+				if (auth == i) {
+					bookAuthor = a;
+				}
+				i++;
 			}
-			i++;
-		}
 
-		System.out.println("Please enter the new name of the author or enter 'n/a' for no change");
-		String name = scan.nextLine();
-		
-		if ("n/a".equals(name.toLowerCase())) {
-			bookAuthor.setAuthorName(name);
-			author.updateAuthor(bookAuthor);
+			System.out.println("Please enter the new name of the author or enter 'n/a' for no change");
+			String name = scan.nextLine();
+			
+			if ("n/a".equals(name.toLowerCase())) {
+				bookAuthor.setAuthorName(name);
+				author.updateAuthor(bookAuthor);
+			}
 		}
-		
 		func(AdminInput.getFunc());
 	}
 
@@ -121,17 +118,14 @@ public class editAuthors {
 		System.out.println(quit + ") Quit to previous");
 		auth = BaseController.getInt(quit);
 		
-		if (auth == quit) {
-			func(AdminInput.getFunc());
-		}
-		
-		for (Author a : authorList) {
-			if (auth == i) {
-				author.deleteAuthor(a);
+		if (auth != quit) {
+			for (Author a : authorList) {
+				if (auth == i) {
+					author.deleteAuthor(a);
+				}
+				i++;
 			}
-			i++;
 		}
-		
 		func(AdminInput.getFunc());
 	}
 

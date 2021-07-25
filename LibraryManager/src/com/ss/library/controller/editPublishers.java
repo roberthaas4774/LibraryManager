@@ -16,8 +16,8 @@ import com.ss.library.service.Admin;
  *
  */
 public class editPublishers {
-static Scanner scan = new Scanner(System.in);
-	
+	static Scanner scan = new Scanner(System.in);
+
 	static Admin<Publisher> publisher = new Admin<Publisher>();
 	static Publisher bookPublisher = new Publisher();
 
@@ -49,27 +49,27 @@ static Scanner scan = new Scanner(System.in);
 //		Genre bookGenre = new Genre();
 		System.out.println("Please enter the name of the Publisher or 'quit' to cancel the operation");
 		String name = scan.nextLine();
-		
+
 		if ("quit".equals(name.toLowerCase())) {
 			func(AdminInput.getFunc());
 		}
-		
+
 		else {
 			System.out.println("Please enter the address of the Publisher or 'quit' to cancel the operation.");
 			String address = scan.nextLine();
-			
+
 			if ("quit".equals(name.toLowerCase())) {
 				func(AdminInput.getFunc());
 			}
-			
+
 			else {
 				System.out.println("Please enter the phone number of the Publisher or 'quit' to cancel the operation.");
 				String phone = scan.nextLine();
-				
+
 				if ("quit".equals(name.toLowerCase())) {
 					func(AdminInput.getFunc());
 				}
-				
+
 				else {
 					bookPublisher.setPublisherName(name);
 					bookPublisher.setPublisherAddress(address);
@@ -77,7 +77,7 @@ static Scanner scan = new Scanner(System.in);
 					publisher.addPublisher(bookPublisher);
 				}
 			}
-			
+
 		}
 		func(AdminInput.getFunc());
 	}
@@ -85,7 +85,7 @@ static Scanner scan = new Scanner(System.in);
 	public static void update() {
 //		Admin<Genre> genre = new Admin<Genre>();
 //		Genre bookGenre = new Genre();
-		
+
 		List<Publisher> publisherList = publisher.readPubs();
 
 		AtomicInteger counter = new AtomicInteger();
@@ -102,41 +102,39 @@ static Scanner scan = new Scanner(System.in);
 		quit = publisherList.size() + 1;
 		System.out.println(quit + ") Quit to previous");
 		auth = BaseController.getInt(quit);
-		
-		if (auth == quit) {
-			func(AdminInput.getFunc());
-		}
-		
-		for (Publisher p : publisherList) {
-			if (auth == i) {
-				bookPublisher = p;
-			}
-			i++;
-		}
 
-		System.out.println("Please enter the new name of the Publisher or enter 'n/a' for no change");
-		String name = scan.nextLine();
-		if ("n/a".equals(name.toLowerCase())) {
-			bookPublisher.setPublisherName(name);;
+		if (auth != quit) {
+			for (Publisher p : publisherList) {
+				if (auth == i) {
+					bookPublisher = p;
+				}
+				i++;
+			}
+
+			System.out.println("Please enter the new name of the Publisher or enter 'n/a' for no change");
+			String name = scan.nextLine();
+			if ("n/a".equals(name.toLowerCase())) {
+				bookPublisher.setPublisherName(name);
+			}
+
+			System.out.println("Please enter the new address of the Publisher or enter 'n/a' for no change");
+			String address = scan.nextLine();
+			if ("n/a".equals(address.toLowerCase())) {
+				bookPublisher.setPublisherAddress(address);
+			}
+
+			System.out.println("Please enter the new phone number of the Publisher or enter 'n/a' for no change");
+			String phone = scan.nextLine();
+			if ("n/a".equals(phone.toLowerCase())) {
+				bookPublisher.setPublisherPhone(phone);
+			}
+
+			publisher.updatePublisher(bookPublisher);
 		}
-		
-		System.out.println("Please enter the new address of the Publisher or enter 'n/a' for no change");
-		String address = scan.nextLine();
-		if ("n/a".equals(name.toLowerCase())) {
-			bookPublisher.setPublisherAddress(address);;
-		}
-		
-		System.out.println("Please enter the new phone number of the Publisher or enter 'n/a' for no change");
-		String phone = scan.nextLine();
-		if ("n/a".equals(phone.toLowerCase())) {
-			bookPublisher.setPublisherPhone(phone);;
-		}
-		
-		publisher.updatePublisher(bookPublisher);
 		func(AdminInput.getFunc());
 	}
 
-	public static void delete() {	
+	public static void delete() {
 		List<Publisher> publisherList = publisher.readPubs();
 
 		AtomicInteger counter = new AtomicInteger();
@@ -153,40 +151,39 @@ static Scanner scan = new Scanner(System.in);
 		quit = publisherList.size() + 1;
 		System.out.println(quit + ") Quit to previous");
 		auth = BaseController.getInt(quit);
-		
-		if (auth == quit) {
-			func(AdminInput.getFunc());
-		}
-		
-		for (Publisher p : publisherList) {
-			if (auth == i) {
-				publisher.deletePublisher(p);
+
+		if (auth != quit) {
+			for (Publisher p : publisherList) {
+				if (auth == i) {
+					publisher.deletePublisher(p);
+				}
+				i++;
 			}
-			i++;
 		}
-		
 		func(AdminInput.getFunc());
 	}
 
 	public static void read() {
 		Admin<Book> book = new Admin<Book>();
-		
+
 		List<Publisher> publisherList = publisher.readPubs();
-		
+
 		System.out.println("\n-------------------------------------------");
 		for (Publisher p : publisherList) {
 			System.out.println("Publisher: " + p.getPublisherName());
-			
+			System.out.println("Address: " + p.getPublisherAddress());
+			System.out.println("Phone Number: " + p.getPublisherPhone());
+
 			System.out.print("Book/Books: ");
 			readBooks(book.readBooksByPubId(p.getPublisherID()));
 			System.out.println("\n-------------------------------------------");
 		}
 		func(AdminInput.getFunc());
 	}
-	
+
 	public static void readBooks(List<Book> list) {
 		int i = 0;
-		
+
 		for (Book b : list) {
 			System.out.print(b.getTitle());
 			if (i != list.size() - 1) {

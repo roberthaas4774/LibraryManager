@@ -209,129 +209,44 @@ public class editBook<T> {
 		quit = bookList.size() + 1;
 		System.out.println(quit + ") Quit to previous");
 		auth = BaseController.getInt(quit);
-		
-		if (auth == quit) {
-			func(AdminInput.getFunc());
-		}
-		for (Book b : bookList) {
-			if (auth == i) {
-				book = b;
-			}
-			i++;
-		}
 
-		System.out.println("Please enter the new title of the book or enter 'n/a' for no change");
-		String title = scan.nextLine();
-
-		while (loop) {
-			System.out.println(
-					"Would you like to edit the authors?\n1) Add authors to the book\n2) Remove authors from the book\n3) Do nothing"
-							+ "\n4) Quit to previous");
-			counter.set(0);
-
-			switch (BaseController.getInt(4)) {
-			case 1: // Adding more authors to the book
-				System.out.println("Please choose one or more Authors. Please enter the number next to the author.");
-				authorList.forEach(a -> {
-					System.out.println(counter.incrementAndGet() + ") " + a.getAuthorName());
-				});
-				done = authorList.size() + 1;
-				quit = done + 1;
-
-				System.out.println(done + ") Done choosing authors\n" + quit + ") Quit to previous");
-				auth = BaseController.getInt(quit);
-
-				while (auth < done) {
-					i = 1;
-					for (Author a : authorList) {
-						if (i == auth) {
-							bookAuthors.setAuthor(a);
-							bookAuthors.setBook(book);
-							bookAuth.addBookAuthor(bookAuthors);
-						}
-						i++;
-					}
-					auth = BaseController.getInt(quit);
+		if (auth != quit) {
+			for (Book b : bookList) {
+				if (auth == i) {
+					book = b;
 				}
-
-//				if (auth == quit) {
-//					prev = true;
-//				}
-				break;
-
-			case 2: // Removing authors from the book
-				System.out.println("Please choose one or more Authors to remove, please leave at least one. "
-						+ "Please enter the number next to the author.");
-				bookAuthorList = bookAuth.readBookAuthorsByBookId(book.getBookID());
-
-				bookAuthorList.forEach(a -> {
-					System.out.println(counter.incrementAndGet() + ") " + a.getAuthor().getAuthorName());
-				});
-				done = bookAuthorList.size() + 1;
-				quit = done + 1;
-
-				System.out.println(done + ") Done choosing authors\n" + quit + ") Quit to previous");
-				auth = BaseController.getInt(quit);
-				while (auth < done) {
-					i = 1;
-					for (BookAuthors a : bookAuthorList) {
-						if (i == auth) {
-							bookAuthors.setAuthor(a.getAuthor());
-							bookAuthors.setBook(book);
-							bookAuth.deleteBookAuthor(bookAuthors);
-						}
-						i++;
-					}
-					auth = BaseController.getInt(quit);
-				}
-
-//				if (auth == quit) {
-//					prev = true;
-//				}
-				break;
-
-			case 3: // Do nothing
-				loop = false;
-				break;
-
-			case 4: // Go to previous menu
-				prev = true;
-				loop = false;
-				break;
+				i++;
 			}
-		}
 
-		if (prev) { // Goes to the previous menu if prev is set to true
-			func(AdminInput.getFunc());
-		}
+			System.out.println("Please enter the new title of the book or enter 'n/a' for no change");
+			String title = scan.nextLine();
 
-		else {
-			loop = true;
 			while (loop) {
 				System.out.println(
-						"Would you like to edit the genres?\n1) Add genres to the book\n2) Remove genres from the book\n3) Do nothing"
+						"Would you like to edit the authors?\n1) Add authors to the book\n2) Remove authors from the book\n3) Do nothing"
 								+ "\n4) Quit to previous");
 				counter.set(0);
 
 				switch (BaseController.getInt(4)) {
-				case 1: // Adding more genres to the book
-					System.out.println("Please choose one or more Genres. Please enter the number next to the genre.");
-					genreList.forEach(g -> {
-						System.out.println(counter.incrementAndGet() + ") " + g.getGenreName());
+				case 1: // Adding more authors to the book
+					System.out
+							.println("Please choose one or more Authors. Please enter the number next to the author.");
+					authorList.forEach(a -> {
+						System.out.println(counter.incrementAndGet() + ") " + a.getAuthorName());
 					});
-					done = genreList.size() + 1;
+					done = authorList.size() + 1;
 					quit = done + 1;
 
-					System.out.println(done + ") Done choosing genres\n");
-					auth = BaseController.getInt(done);
+					System.out.println(done + ") Done choosing authors\n" + quit + ") Quit to previous");
+					auth = BaseController.getInt(quit);
 
 					while (auth < done) {
 						i = 1;
-						for (Genre g : genreList) {
+						for (Author a : authorList) {
 							if (i == auth) {
-								bookGenres.setBook(book);
-								bookGenres.setGenre(g);
-								bookGen.addBookGenre(bookGenres);
+								bookAuthors.setAuthor(a);
+								bookAuthors.setBook(book);
+								bookAuth.addBookAuthor(bookAuthors);
 							}
 							i++;
 						}
@@ -343,25 +258,26 @@ public class editBook<T> {
 //					}
 					break;
 
-				case 2: // Removing genres from the book
-					System.out.println("Please choose one or more Genres to remove, Please enter the number next to the genre.");
-					bookGenreList = bookGen.readBookGenresByBookId(book.getBookID());
-					
-					bookGenreList.forEach(g -> {
-						System.out.println(counter.incrementAndGet() + ") " + g.getGenre().getGenreName());
+				case 2: // Removing authors from the book
+					System.out.println("Please choose one or more Authors to remove, please leave at least one. "
+							+ "Please enter the number next to the author.");
+					bookAuthorList = bookAuth.readBookAuthorsByBookId(book.getBookID());
+
+					bookAuthorList.forEach(a -> {
+						System.out.println(counter.incrementAndGet() + ") " + a.getAuthor().getAuthorName());
 					});
-					done = bookGenreList.size() + 1;
+					done = bookAuthorList.size() + 1;
 					quit = done + 1;
 
-					System.out.println(done + ") Done choosing genres\n" + quit + ") Quit to previous");
+					System.out.println(done + ") Done choosing authors\n" + quit + ") Quit to previous");
 					auth = BaseController.getInt(quit);
 					while (auth < done) {
 						i = 1;
-						for (BookGenres g : bookGenreList) {
+						for (BookAuthors a : bookAuthorList) {
 							if (i == auth) {
-								bookGenres.setGenre(g.getGenre());
-								bookGenres.setBook(book);
-								bookGen.deleteBookGenre(bookGenres);
+								bookAuthors.setAuthor(a.getAuthor());
+								bookAuthors.setBook(book);
+								bookAuth.deleteBookAuthor(bookAuthors);
 							}
 							i++;
 						}
@@ -370,7 +286,6 @@ public class editBook<T> {
 
 //					if (auth == quit) {
 //						prev = true;
-//						loop = false;
 //					}
 					break;
 
@@ -384,48 +299,135 @@ public class editBook<T> {
 					break;
 				}
 			}
-			System.out.println();
+
 			if (prev) { // Goes to the previous menu if prev is set to true
 				func(AdminInput.getFunc());
 			}
-			
+
 			else {
-				System.out.println("Would you like to change the publisher?\n1) Yes\n2) No\n3) Quit to previous");
-				auth = BaseController.getInt(3);
-				if (auth == 3) {
-					func(AdminInput.getFunc());
-				}
-				else {
-					if (auth == 1) {
-						System.out.println("Please choose one Publisher. Please enter the number next to the Publisher.");
-						counter.set(0);
-						pubList.forEach(p -> {
-							System.out.println(counter.incrementAndGet() + ") " + p.getPublisherName());
+				loop = true;
+				while (loop) {
+					System.out.println(
+							"Would you like to edit the genres?\n1) Add genres to the book\n2) Remove genres from the book\n3) Do nothing"
+									+ "\n4) Quit to previous");
+					counter.set(0);
+
+					switch (BaseController.getInt(4)) {
+					case 1: // Adding more genres to the book
+						System.out.println(
+								"Please choose one or more Genres. Please enter the number next to the genre.");
+						genreList.forEach(g -> {
+							System.out.println(counter.incrementAndGet() + ") " + g.getGenreName());
 						});
-						quit = pubList.size() + 1;
+						done = genreList.size() + 1;
+						quit = done + 1;
 
-						System.out.println(quit + ") Quit to previous");
-						auth = BaseController.getInt(quit);
+						System.out.println(done + ") Done choosing genres\n");
+						auth = BaseController.getInt(done);
 
-						if (auth == quit) {
-							func(AdminInput.getFunc());
-						}
-
-						else {
+						while (auth < done) {
 							i = 1;
-
-							for (Publisher p : pubList) {
+							for (Genre g : genreList) {
 								if (i == auth) {
-									book.setPubID(p.getPublisherID());
+									bookGenres.setBook(book);
+									bookGenres.setGenre(g);
+									bookGen.addBookGenre(bookGenres);
 								}
 								i++;
 							}
+							auth = BaseController.getInt(quit);
 						}
+
+//						if (auth == quit) {
+//							prev = true;
+//						}
+						break;
+
+					case 2: // Removing genres from the book
+						System.out.println(
+								"Please choose one or more Genres to remove, Please enter the number next to the genre.");
+						bookGenreList = bookGen.readBookGenresByBookId(book.getBookID());
+
+						bookGenreList.forEach(g -> {
+							System.out.println(counter.incrementAndGet() + ") " + g.getGenre().getGenreName());
+						});
+						done = bookGenreList.size() + 1;
+						quit = done + 1;
+
+						System.out.println(done + ") Done choosing genres\n" + quit + ") Quit to previous");
+						auth = BaseController.getInt(quit);
+						while (auth < done) {
+							i = 1;
+							for (BookGenres g : bookGenreList) {
+								if (i == auth) {
+									bookGenres.setGenre(g.getGenre());
+									bookGenres.setBook(book);
+									bookGen.deleteBookGenre(bookGenres);
+								}
+								i++;
+							}
+							auth = BaseController.getInt(quit);
+						}
+
+//						if (auth == quit) {
+//							prev = true;
+//							loop = false;
+//						}
+						break;
+
+					case 3: // Do nothing
+						loop = false;
+						break;
+
+					case 4: // Go to previous menu
+						prev = true;
+						loop = false;
+						break;
 					}
-					if (!"n/a".equals(title.toLowerCase())) {
-						book.setTitle(title);
+				}
+				System.out.println();
+				if (prev) { // Goes to the previous menu if prev is set to true
+					func(AdminInput.getFunc());
+				}
+
+				else {
+					System.out.println("Would you like to change the publisher?\n1) Yes\n2) No\n3) Quit to previous");
+					auth = BaseController.getInt(3);
+					if (auth == 3) {
+						func(AdminInput.getFunc());
+					} else {
+						if (auth == 1) {
+							System.out.println(
+									"Please choose one Publisher. Please enter the number next to the Publisher.");
+							counter.set(0);
+							pubList.forEach(p -> {
+								System.out.println(counter.incrementAndGet() + ") " + p.getPublisherName());
+							});
+							quit = pubList.size() + 1;
+
+							System.out.println(quit + ") Quit to previous");
+							auth = BaseController.getInt(quit);
+
+							if (auth == quit) {
+								func(AdminInput.getFunc());
+							}
+
+							else {
+								i = 1;
+
+								for (Publisher p : pubList) {
+									if (i == auth) {
+										book.setPubID(p.getPublisherID());
+									}
+									i++;
+								}
+							}
+						}
+						if (!"n/a".equals(title.toLowerCase())) {
+							book.setTitle(title);
+						}
+						bk.updateBook(book);
 					}
-					bk.updateBook(book);
 				}
 			}
 		}
@@ -451,15 +453,14 @@ public class editBook<T> {
 		quit = bookList.size() + 1;
 		System.out.println(quit + ") Quit to previous");
 		auth = BaseController.getInt(quit);
-		
-		if (auth == quit) {
-			func(AdminInput.getFunc());
-		}
-		for (Book b : bookList) {
-			if (auth == i) {
-				bk.deleteBook(b);
+
+		if (auth != quit) {
+			for (Book b : bookList) {
+				if (auth == i) {
+					bk.deleteBook(b);
+				}
+				i++;
 			}
-			i++;
 		}
 		func(AdminInput.getFunc());
 	}
@@ -469,28 +470,28 @@ public class editBook<T> {
 		Admin<BookAuthors> bookAuthor = new Admin<BookAuthors>();
 		Admin<BookGenres> bookGenre = new Admin<BookGenres>();
 		Admin<Publisher> publisher = new Admin<Publisher>();
-		
+
 		List<Book> bookList = bk.readBooks();
-		
+
 		System.out.println("\n-------------------------------------------");
 		for (Book b : bookList) {
 			System.out.println("Title: " + b.getTitle());
-			
+
 			System.out.print("Author/Authors: ");
 			readAuthors(bookAuthor.readBookAuthorsByBookId(b.getBookID()));
-			
+
 			System.out.print("Genre/Genres: ");
 			readGenres(bookGenre.readBookGenresByBookId(b.getBookID()));
-			
+
 			System.out.print("Publisher: " + publisher.readPubById(b.getPubID()).get(0).getPublisherName());
 //			publisher.readPubById(b.getPubID()).get(0).getPublisherName();
 			System.out.println("\n-------------------------------------------");
 		}
 	}
-	
+
 	public static void readAuthors(List<BookAuthors> list) {
 		int i = 0;
-		
+
 		for (BookAuthors ba : list) {
 			System.out.print(ba.getAuthor().getAuthorName());
 			if (i != list.size() - 1) {
@@ -500,10 +501,10 @@ public class editBook<T> {
 		}
 		System.out.println();
 	}
-	
+
 	public static void readGenres(List<BookGenres> list) {
 		int i = 0;
-		
+
 		for (BookGenres bg : list) {
 			System.out.print(bg.getGenre().getGenreName());
 			if (i != list.size() - 1) {

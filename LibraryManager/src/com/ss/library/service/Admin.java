@@ -8,15 +8,23 @@ import java.util.List;
 
 import com.ss.library.dao.AuthorDAO;
 import com.ss.library.dao.BookAuthorsDAO;
+import com.ss.library.dao.BookCopiesDAO;
 import com.ss.library.dao.BookDAO;
 import com.ss.library.dao.BookGenresDAO;
+import com.ss.library.dao.BookLoansDAO;
+import com.ss.library.dao.BorrowerDAO;
 import com.ss.library.dao.GenreDAO;
+import com.ss.library.dao.LibraryBranchDAO;
 import com.ss.library.dao.PublisherDAO;
 import com.ss.library.entity.Author;
 import com.ss.library.entity.Book;
 import com.ss.library.entity.BookAuthors;
+import com.ss.library.entity.BookCopies;
 import com.ss.library.entity.BookGenres;
+import com.ss.library.entity.BookLoans;
+import com.ss.library.entity.Borrower;
 import com.ss.library.entity.Genre;
+import com.ss.library.entity.LibraryBranch;
 import com.ss.library.entity.Publisher;
 
 /**
@@ -38,6 +46,56 @@ public class Admin<T> {
 			System.out.println("Successfully added the author");
 		} catch (Exception e) {
 			System.out.println("Could not add the author");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
+	public void addLibraryBranch(LibraryBranch branch) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			LibraryBranchDAO lbdao = new LibraryBranchDAO(conn);
+			lbdao.addLibraryBranch(branch);
+			
+			conn.commit();
+			System.out.println("Successfully added the Library Branch");
+		} catch (Exception e) {
+			System.out.println("Could not add the Library Branch");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
+	public void addBorrower(Borrower bor) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BorrowerDAO bdao = new BorrowerDAO(conn);
+			bdao.addBorrower(bor);
+			
+			conn.commit();
+			System.out.println("Successfully added the Borrower");
+		} catch (Exception e) {
+			System.out.println("Could not add the Borrower");
 			try {
 				conn.rollback();
 			} catch (Exception e1) {
@@ -279,6 +337,56 @@ public class Admin<T> {
 		}
 	}
 	
+	public void updateLibraryBranch(LibraryBranch branch) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			LibraryBranchDAO lbdao = new LibraryBranchDAO(conn);
+			lbdao.updateLibraryBranch(branch);
+			
+			conn.commit();
+			System.out.println("Successfully updated the Library Branch");
+		} catch (Exception e) {
+			System.out.println("Could not update the Library Branch");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
+	public void updateBorrower(Borrower bor) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BorrowerDAO bdao = new BorrowerDAO(conn);
+			bdao.updateBorrower(bor);
+			
+			conn.commit();
+			System.out.println("Successfully updated the Borrower");
+		} catch (Exception e) {
+			System.out.println("Could not update the Borrower");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
 	public List<Author> readAuthors() {
 		Connection conn = null;
 		try {
@@ -479,16 +587,41 @@ public class Admin<T> {
 		return null;
 	}
 	
-	public List<Book> readAllBooksInLibrary() {
+//	public List<Book> readAllBooksInLibrary() {
+//		Connection conn = null;
+//		try {
+//			conn = util.getConnection();
+//			BookDAO bdao = new BookDAO(conn);
+//			// pass connections
+//			List<Book> book = bdao.readAllBooksAndMore();
+//			return book;
+//		} catch (Exception e) {
+//			System.out.println("Could not read from the Book table");
+//			try {
+//				conn.rollback();
+//			} catch (Exception e1) {
+//				System.out.println("Could not rollback successfully");
+//			}
+//		} finally {
+//			try {
+//				conn.close();
+//			} catch (Exception e) {
+//				System.out.println("Could not close the connection successfully");
+//			}
+//		}
+//		return null;
+//	}
+	
+	public List<BookCopies> readBooksbyBranch(int id) {
 		Connection conn = null;
 		try {
 			conn = util.getConnection();
-			BookDAO bdao = new BookDAO(conn);
+			BookCopiesDAO bcdao = new BookCopiesDAO(conn);
 			// pass connections
-			List<Book> book = bdao.readAllBooksAndMore();
+			List<BookCopies> book = bcdao.readAvailableCopiesInBranch(id);
 			return book;
 		} catch (Exception e) {
-			System.out.println("Could not read from the Book table");
+			System.out.println("Could not read from the Book Copies table");
 			try {
 				conn.rollback();
 			} catch (Exception e1) {
@@ -564,6 +697,81 @@ public class Admin<T> {
 			return pub;
 		} catch (Exception e) {
 			System.out.println("Could not read from the Publisher table");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+		return null;
+	}
+	
+	public List<LibraryBranch> readLibraryBranch() {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			LibraryBranchDAO lbdao = new LibraryBranchDAO(conn);
+			
+			List<LibraryBranch> branch = lbdao.readAllLibraryBranches();
+			return branch;
+		} catch (Exception e) {
+			System.out.println("Could not read from the Library Branch table");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+		return null;
+	}
+	
+	public List<Borrower> readBorrower() {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BorrowerDAO bdao = new BorrowerDAO(conn);
+			
+			List<Borrower> bor = bdao.readAllBorrowers();
+			return bor;
+		} catch (Exception e) {
+			System.out.println("Could not read from the Borrower table");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+		return null;
+	}
+	
+	public List<BookLoans> readLoansByCard(int id) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BookLoansDAO bldao = new BookLoansDAO(conn);
+			
+			List<BookLoans> loan = bldao.readBookLoanByPerson(id);
+			return loan;
+		} catch (Exception e) {
+			System.out.println("Could not read from the Book Loans table");
 			try {
 				conn.rollback();
 			} catch (Exception e1) {
@@ -715,6 +923,56 @@ public class Admin<T> {
 			System.out.println("Genre deleted successfully");
 		} catch (Exception e) {
 			System.out.println("Could not delete Genre");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
+	public void deleteLibraryBranch(LibraryBranch branch) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			LibraryBranchDAO lbdao = new LibraryBranchDAO(conn);
+			lbdao.deleteLibraryBranch(branch);
+			
+			conn.commit();
+			System.out.println("Successfully deleted the Library Branch");
+		} catch (Exception e) {
+			System.out.println("Could not delete the Library Branch");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
+	public void deleteBorrower(Borrower bor) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BorrowerDAO bdao = new BorrowerDAO(conn);
+			bdao.deleteBorrower(bor);
+			
+			conn.commit();
+			System.out.println("Successfully deleted the Borrower");
+		} catch (Exception e) {
+			System.out.println("Could not delete the Borrower");
 			try {
 				conn.rollback();
 			} catch (Exception e1) {

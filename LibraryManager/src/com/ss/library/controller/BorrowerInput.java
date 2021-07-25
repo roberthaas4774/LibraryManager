@@ -11,13 +11,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import com.ss.library.entity.Book;
 import com.ss.library.entity.BookCopies;
 import com.ss.library.entity.BookLoans;
 import com.ss.library.entity.Borrower;
 import com.ss.library.entity.LibraryBranch;
 import com.ss.library.service.BorrowerUser;
-import com.ss.library.service.Librarian;
 
 /**
  * @author Robert Haas
