@@ -387,6 +387,31 @@ public class Admin<T> {
 		}
 	}
 	
+	public void updateLoan(BookLoans loan) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BookLoansDAO bldao = new BookLoansDAO(conn);
+			bldao.updateBookLoan(loan);
+			
+			conn.commit();
+			System.out.println("Successfully updated the loan");
+		} catch (Exception e) {
+			System.out.println("Could not update the loan");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
 	public List<Author> readAuthors() {
 		Connection conn = null;
 		try {
@@ -769,6 +794,31 @@ public class Admin<T> {
 			BookLoansDAO bldao = new BookLoansDAO(conn);
 			
 			List<BookLoans> loan = bldao.readBookLoanByPerson(id);
+			return loan;
+		} catch (Exception e) {
+			System.out.println("Could not read from the Book Loans table");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+		return null;
+	}
+	
+	public List<BookLoans> readLoans() {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BookLoansDAO bldao = new BookLoansDAO(conn);
+			
+			List<BookLoans> loan = bldao.readAllBookLoans();
 			return loan;
 		} catch (Exception e) {
 			System.out.println("Could not read from the Book Loans table");

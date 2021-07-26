@@ -484,9 +484,9 @@ public class editBook<T> {
 			readGenres(bookGenre.readBookGenresByBookId(b.getBookID()));
 
 			System.out.print("Publisher: " + publisher.readPubById(b.getPubID()).get(0).getPublisherName());
-//			publisher.readPubById(b.getPubID()).get(0).getPublisherName();
 			System.out.println("\n-------------------------------------------");
 		}
+		func(AdminInput.getFunc());
 	}
 
 	public static void readAuthors(List<BookAuthors> list) {

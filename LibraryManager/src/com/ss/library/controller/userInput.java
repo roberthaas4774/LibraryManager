@@ -3,12 +3,7 @@
  */
 package com.ss.library.controller;
 
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Scanner;
-
-import com.ss.library.entity.LibraryBranch;
-import com.ss.library.service.Librarian;
 
 /**
  * @author Robert Haas

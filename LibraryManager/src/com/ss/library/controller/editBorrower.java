@@ -113,19 +113,19 @@ public class editBorrower {
 
 			System.out.println("Please enter the new name of the Borrower or enter 'n/a' for no change");
 			String name = scan.nextLine();
-			if ("n/a".equals(name.toLowerCase())) {
+			if (!"n/a".equals(name.toLowerCase())) {
 				borrower.setName(name);
 			}
 
 			System.out.println("Please enter the new address of the Borrower or enter 'n/a' for no change");
 			String address = scan.nextLine();
-			if ("n/a".equals(address.toLowerCase())) {
+			if (!"n/a".equals(address.toLowerCase())) {
 				borrower.setAddress(address);
 			}
 			
 			System.out.println("Please enter the new phone number of the Borrower or enter 'n/a' for no change");
 			String phone = scan.nextLine();
-			if ("n/a".equals(phone.toLowerCase())) {
+			if (!"n/a".equals(phone.toLowerCase())) {
 				borrower.setPhoneNo(phone);
 			}
 
@@ -177,23 +177,21 @@ public class editBorrower {
 			System.out.println("Address: " + b.getAddress());
 			System.out.println("Phone Number: " + b.getPhoneNo());
 
-			System.out.print("Book/Books: ");
 			readBooks(book.readLoansByCard(b.getCardNo()));
-			System.out.println("\n-------------------------------------------");
+			System.out.println("-------------------------------------------");
 		}
+		System.out.println();
 		func(AdminInput.getFunc());
 	}
 
 	public static void readBooks(List<BookLoans> list) {
-		int i = 0;
-
 		for (BookLoans bl : list) {
-			System.out.print(bl.getBook().getTitle() + " from " + bl.getBranch().getBranchID());
-			if (i != list.size() - 1) {
-				System.out.print(", ");
+			System.out.println();
+			System.out.println("Book: " + bl.getBook().getTitle() + "\nFrom: " + bl.getBranch().getBranchName() + "\n"
+					+ "Date out: " + bl.getDateOut() + "\nDue: " + bl.getDateDue());
+			if (bl.getDateIn() != null) {
+				System.out.println("Turned in on " + bl.getDateIn());
 			}
-			i++;
 		}
-		System.out.println();
 	}
 }

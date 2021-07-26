@@ -113,7 +113,8 @@ public class BorrowerInput {
 					c.setBook(c.getBook());
 					
 					Date out = new Date();
-					DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//					DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 					
 					int noOfDays = 7; 
 					Calendar calendar = Calendar.getInstance();
@@ -179,7 +180,8 @@ public class BorrowerInput {
 				if (choice == i) {	
 					
 					Date in = new Date();
-					DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//					DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
 					df.format(in);
 					b.setDateIn(in);

@@ -41,7 +41,8 @@ public class BookLoansDAO extends BaseDAO<BookLoans>{
 	}
 	
 	public List<BookLoans> readAllBookLoans() throws ClassNotFoundException, SQLException{
-		return read("select * from library.tbl_book_loans", null);
+		return read("select * from library.tbl_book_loans natural join library.tbl_book natural join library.tbl_library_branch"
+				+ " natural join library.tbl_borrower", null);
 	}
 	
 	public List<BookLoans> readBookLoanByID(BookLoans loan) throws ClassNotFoundException, SQLException{
