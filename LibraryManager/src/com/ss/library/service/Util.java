@@ -11,7 +11,7 @@ import java.sql.SQLException;
  * @author Robert Haas
  *
  */
-public class Util {
+public class Util { // Connects to the database
 	
 	private static final String driver = "com.mysql.cj.jdbc.Driver";
 	private static final String url = "jdbc:mysql://localhost:3306/library?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC";

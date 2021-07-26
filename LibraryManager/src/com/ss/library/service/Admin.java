@@ -4,7 +4,9 @@
 package com.ss.library.service;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.ss.library.dao.AuthorDAO;
 import com.ss.library.dao.BookAuthorsDAO;
@@ -35,6 +37,49 @@ public class Admin<T> {
 	
 	Util util = new Util();
 	
+	public void addBookAdmin(Book book, HashMap<Integer, Author> hashAuthor, HashMap<Integer, Genre> hashGen) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			
+			BookDAO bdao = new BookDAO(conn);
+			BookAuthorsDAO badao = new BookAuthorsDAO(conn);
+			BookGenresDAO bgdao = new BookGenresDAO(conn);
+			
+			book.setBookID(bdao.addBook(book));
+			
+			BookAuthors bookAuth = new BookAuthors();
+			for(Map.Entry<Integer, Author> element : hashAuthor.entrySet()) {
+				bookAuth.setAuthor(element.getValue());
+				bookAuth.setBook(book);
+				badao.addBookAuthors(bookAuth);
+			}
+			
+			BookGenres bookGen = new BookGenres();
+			for (Map.Entry<Integer, Genre> element : hashGen.entrySet()) {
+				bookGen.setGenre(element.getValue());
+				bookGen.setBook(book);
+				bgdao.addBookGenres(bookGen);
+			}
+			
+			conn.commit();
+			System.out.println("Successfully added the author");
+		} catch (Exception e) {
+			System.out.println("Could not add the author");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
 	public void addAuthor(Author author) {
 		Connection conn = null;
 		try {
@@ -60,15 +105,16 @@ public class Admin<T> {
 		}
 	}
 	
-	public void addLibraryBranch(LibraryBranch branch) {
+	public int addLibraryBranch(LibraryBranch branch) {
 		Connection conn = null;
 		try {
 			conn = util.getConnection();
 			LibraryBranchDAO lbdao = new LibraryBranchDAO(conn);
-			lbdao.addLibraryBranch(branch);
+			int pk = lbdao.addLibraryBranchAndReturn(branch);
 			
 			conn.commit();
 			System.out.println("Successfully added the Library Branch");
+			return pk;
 		} catch (Exception e) {
 			System.out.println("Could not add the Library Branch");
 			try {
@@ -83,6 +129,7 @@ public class Admin<T> {
 				System.out.println("Could not close the connection successfully");
 			}
 		}
+		return 0;
 	}
 	
 	public void addBorrower(Borrower bor) {
@@ -223,6 +270,31 @@ public class Admin<T> {
 			System.out.println("Book Genre added successfully");
 		} catch (Exception e) {
 			System.out.println("Could not add Book Genre");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
+	public void addBookCopies(BookCopies copy) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BookCopiesDAO bcdao = new BookCopiesDAO(conn);
+			bcdao.addBookCopies(copy);
+			
+			conn.commit();
+			System.out.println("Successfully added the Book Copy");
+		} catch (Exception e) {
+			System.out.println("Could not add the Book Copy");
 			try {
 				conn.rollback();
 			} catch (Exception e1) {
@@ -398,6 +470,31 @@ public class Admin<T> {
 			System.out.println("Successfully updated the loan");
 		} catch (Exception e) {
 			System.out.println("Could not update the loan");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
+	public void updateBookCopies(BookCopies copy) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BookCopiesDAO bcdao = new BookCopiesDAO(conn);
+			bcdao.updateBookCopies(copy);
+			
+			conn.commit();
+			System.out.println("Successfully updated the Book Copy");
+		} catch (Exception e) {
+			System.out.println("Could not update Book Copies");
 			try {
 				conn.rollback();
 			} catch (Exception e1) {
@@ -1023,6 +1120,31 @@ public class Admin<T> {
 			System.out.println("Successfully deleted the Borrower");
 		} catch (Exception e) {
 			System.out.println("Could not delete the Borrower");
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				System.out.println("Could not rollback successfully");
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("Could not close the connection successfully");
+			}
+		}
+	}
+	
+	public void deleteBookCopies(BookCopies copy) {
+		Connection conn = null;
+		try {
+			conn = util.getConnection();
+			BookCopiesDAO bcdao = new BookCopiesDAO(conn);
+			bcdao.deleteBookCopies(copy);
+			
+			conn.commit();
+			System.out.println("Successfully deleted the Book Copy");
+		} catch (Exception e) {
+			System.out.println("Could not delete the Book Copy");
 			try {
 				conn.rollback();
 			} catch (Exception e1) {

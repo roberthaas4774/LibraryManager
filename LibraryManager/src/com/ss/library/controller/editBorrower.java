@@ -21,21 +21,26 @@ public class editBorrower {
 	static Admin<Borrower> borrCall = new Admin<Borrower>();
 	static Borrower borrower = new Borrower();
 
-	public static void func(int f) {
+	public static void func(int f) { // Calls a method depending on the user input
 		switch (f) {
 		case 1:
+			System.out.println();
 			add();
 			break;
 		case 2:
+			System.out.println();
 			update();
 			break;
 		case 3:
+			System.out.println();
 			delete();
 			break;
 		case 4:
+			System.out.println();
 			read();
 			break;
 		case 5:
+			System.out.println();
 			AdminInput.admin();
 			break;
 		case 6:
@@ -44,9 +49,7 @@ public class editBorrower {
 		scan.close();
 	}
 
-	public static void add() {
-//		Admin<Genre> genre = new Admin<Genre>();
-//		Genre bookGenre = new Genre();
+	public static void add() { // Adds borrowers to the database
 		System.out.println("Please enter the name of the Borrower or 'quit' to cancel the operation");
 		String name = scan.nextLine();
 
@@ -82,10 +85,7 @@ public class editBorrower {
 		func(AdminInput.getFunc());
 	}
 
-	public static void update() {
-//		Admin<Genre> genre = new Admin<Genre>();
-//		Genre bookGenre = new Genre();
-
+	public static void update() { // Updates Borrowers info 
 		List<Borrower> borrList = borrCall.readBorrower();
 
 		AtomicInteger counter = new AtomicInteger();
@@ -134,7 +134,7 @@ public class editBorrower {
 		func(AdminInput.getFunc());
 	}
 
-	public static void delete() {
+	public static void delete() { // Deletes Borrowers from the database
 		List<Borrower> borrList = borrCall.readBorrower();
 
 		AtomicInteger counter = new AtomicInteger();
@@ -166,7 +166,7 @@ public class editBorrower {
 		func(AdminInput.getFunc());
 	}
 
-	public static void read() {
+	public static void read() { // Prints all the Borrowers and the info associated with them
 		Admin<BookLoans> book = new Admin<BookLoans>();
 
 		List<Borrower> borrList = borrCall.readBorrower();
@@ -184,7 +184,7 @@ public class editBorrower {
 		func(AdminInput.getFunc());
 	}
 
-	public static void readBooks(List<BookLoans> list) {
+	public static void readBooks(List<BookLoans> list) { // Prints the books the borrower has rented out
 		for (BookLoans bl : list) {
 			System.out.println();
 			System.out.println("Book: " + bl.getBook().getTitle() + "\nFrom: " + bl.getBranch().getBranchName() + "\n"

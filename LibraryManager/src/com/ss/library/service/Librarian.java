@@ -20,13 +20,12 @@ import com.ss.library.entity.LibraryBranch;
 public class Librarian<T> {
 	Util util = new Util();
 
-	public List<LibraryBranch> readLibraryBranch() {
+	public List<LibraryBranch> readLibraryBranch() { // Returns a list of all the library branches in the database
 		Connection conn = null;
 		List<LibraryBranch> list = null;
 		try {
 			conn = util.getConnection();
 			LibraryBranchDAO lbdao = new LibraryBranchDAO(conn);
-			// pass connections
 			list = lbdao.readAllLibraryBranches();
 		} catch (Exception e) {
 			System.out.println("Could not read from the Library Branch table");
@@ -45,12 +44,11 @@ public class Librarian<T> {
 		return list;
 	}
 	
-	public void updateLibraryBranch(LibraryBranch lib) {
+	public void updateLibraryBranch(LibraryBranch lib) { // updates the library branch
 		Connection conn = null;
 		try {
 			conn = util.getConnection();
 			LibraryBranchDAO lbdao = new LibraryBranchDAO(conn);
-			// pass connections
 			lbdao.updateLibraryBranch(lib);
 			conn.commit();
 			System.out.println("Branch has been successfully updated!");
@@ -70,13 +68,12 @@ public class Librarian<T> {
 		}
 	}
 	
-	public List<Book> readBook() {
+	public List<Book> readBook() { // Returns a list of all the books in the database
 		Connection conn = null;
 		List<Book> list = null;
 		try {
 			conn = util.getConnection();
 			BookDAO bdao = new BookDAO(conn);
-			// pass connections
 			list = bdao.readAllBooks();
 		} catch (Exception e) {
 			System.out.println("Could not read from the Book table");
@@ -95,9 +92,8 @@ public class Librarian<T> {
 		return list;
 	}
 	
-	public List<BookCopies> readCopiesList(Book b, LibraryBranch l) {
+	public List<BookCopies> readCopiesList(Book b, LibraryBranch l) { // Returns a list of bookCopies based on bookId and branchId
 		Connection conn = null;
-//		List<BookCopies> list = null;
 		try {
 			conn = util.getConnection();
 			BookCopiesDAO bcdao = new BookCopiesDAO(conn);
@@ -120,7 +116,7 @@ public class Librarian<T> {
 		return null;
 	}
 	
-	public void updateBookCopies(BookCopies bookC) {
+	public void updateBookCopies(BookCopies bookC) { // Updates the book copies
 		Connection conn = null;
 		try {
 			conn = util.getConnection();
@@ -144,7 +140,7 @@ public class Librarian<T> {
 		}
 	}
 	
-	public void addBookCopies(BookCopies bookC) {
+	public void addBookCopies(BookCopies bookC) { // Adds to the book copies table
 		Connection conn = null;
 		try {
 			conn = util.getConnection();

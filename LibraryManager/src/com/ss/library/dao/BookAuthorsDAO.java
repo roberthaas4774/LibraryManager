@@ -26,7 +26,7 @@ public class BookAuthorsDAO extends BaseDAO<BookAuthors> {
 		save("insert into library.tbl_book_authors values (?, ?)", new Object[] {auth.getBook().getBookID(), auth.getAuthor().getAuthorID()});
 	}
 
-	public void deleteBookAuthors(BookAuthors auth) throws ClassNotFoundException, SQLException {
+	public void deleteBookAuthors(BookAuthors auth) throws ClassNotFoundException, SQLException { 
 		save("delete from library.tbl_book_authors where bookId = ? and authorId = ?", new Object[] {auth.getBook().getBookID(), 
 				auth.getAuthor().getAuthorID()});
 	}
@@ -61,8 +61,7 @@ public class BookAuthorsDAO extends BaseDAO<BookAuthors> {
 			
 			author.setAuthorID(rs.getInt("authorId"));
 			author.setAuthorName(rs.getString("authorName"));
-			ba.setAuthor(author);
-			
+			ba.setAuthor(author);	
 			
 			copy.add(ba);
 		}

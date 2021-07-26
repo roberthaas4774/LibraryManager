@@ -49,10 +49,6 @@ public class BookDAO extends BaseDAO<Book>{
 		return read("select * from library.tbl_book where bookId = ?", new Object[] {book.getBookID()});
 	}
 	
-//	public List<Book> readBookLoanByPerson(int cardNo) throws ClassNotFoundException, SQLException{
-//		return read("select  from library.tbl_book_loans natural join library.tbl_book where cardNo = ?", new Object[] {cardNo});
-//	}
-	
 	public List<Book> readBookByPubId(int id) throws ClassNotFoundException, SQLException{
 		return read("select * from library.tbl_book where pubId = ?", new Object[] {id});
 	}

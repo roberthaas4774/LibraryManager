@@ -22,7 +22,13 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 	}
 
 	public void addLibraryBranch(LibraryBranch libBranch) throws ClassNotFoundException, SQLException {
-		save("insert into library.tbl_library_branch values (?, ?, ?)", new Object[] {libBranch.getBranchID(), libBranch.getBranchName(), libBranch.getBranchAddress()});
+		save("insert into library.tbl_library_branch values (?, ?, ?)", new Object[] {
+				libBranch.getBranchID(), libBranch.getBranchName(), libBranch.getBranchAddress()});
+	}
+	
+	public int addLibraryBranchAndReturn(LibraryBranch libBranch) throws ClassNotFoundException, SQLException {
+		return saveReturnPK("insert into library.tbl_library_branch values (?, ?, ?)", new Object[] {
+				libBranch.getBranchID(), libBranch.getBranchName(), libBranch.getBranchAddress()});
 	}
 
 	public void updateLibraryBranch(LibraryBranch libBranch) throws ClassNotFoundException, SQLException {
@@ -41,11 +47,6 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 	public List<LibraryBranch> readLibraryBranchesByID(LibraryBranch libBranch) throws ClassNotFoundException, SQLException{
 		return read("select * from library.tbl_library_branch where branchId = ?", new Object[] {libBranch.getBranchID()});
 	}
-	
-//	public List<LibraryBranch> readCopies(LibraryBranch libBranch) throws ClassNotFoundException, SQLException{
-//		return read("select noOfCopies from library.tbl_book_copies natural join library.tbl_book natural join library.tbl_library_branch"
-//				+ " where branchId = ? and bookId = ?", new Object[] {libBranch.getBranchID(), libBranch.getBookCopies()});
-//	}
 	
 	public List<LibraryBranch> extractData(ResultSet rs) throws ClassNotFoundException, SQLException{
 		List<LibraryBranch> libBranches = new ArrayList<>();

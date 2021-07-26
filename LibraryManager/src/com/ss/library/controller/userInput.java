@@ -22,7 +22,7 @@ public class userInput {
 		scan.close();
 	}
 
-	public static void user() {
+	public static void user() { // Calls a different class method depending on the users input
 		System.out.println("Welcome to the SS Library Management System. Which category of a user are you? Please input the number of the choice\n"
 				+ "1) Librarian\n2) Administrator\n3) Borrower\n4) Close application");
 
@@ -48,7 +48,6 @@ public class userInput {
 			break;
 		}
 		
-//		System.out.println("Goodbye");
 		BaseController.close();
 		scan.close();
 	}

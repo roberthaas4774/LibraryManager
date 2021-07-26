@@ -24,22 +24,37 @@ import com.ss.library.service.Admin;
 public class editBook<T> {
 
 	static Scanner scan = new Scanner(System.in);
+	static Admin<Author> author = new Admin<Author>();
+	static Admin<Genre> genre = new Admin<Genre>();
+	static Admin<Publisher> pub = new Admin<Publisher>();
+	static Admin<Book> bk = new Admin<Book>();
 
-	public static void func(int f) {
+	static List<Author> authorList = author.readAuthors();
+	static List<Genre> genreList = genre.readGenres();
+	static List<Publisher> pubList = pub.readPubs();
+
+	static Book book = new Book();
+	
+	public static void func(int f) { // Calls a method depending on the users input
 		switch (f) {
 		case 1:
+			System.out.println();
 			add();
 			break;
 		case 2:
+			System.out.println();
 			update();
 			break;
 		case 3:
+			System.out.println();
 			delete();
 			break;
 		case 4:
+			System.out.println();
 			read();
 			break;
 		case 5:
+			System.out.println();
 			AdminInput.admin();
 			break;
 		case 6:
@@ -48,22 +63,7 @@ public class editBook<T> {
 		scan.close();
 	}
 
-	public static void add() {
-		Admin<Author> author = new Admin<Author>();
-		Admin<Genre> genre = new Admin<Genre>();
-		Admin<Publisher> pub = new Admin<Publisher>();
-		Admin<Book> bk = new Admin<Book>();
-		Admin<BookAuthors> bookAuth = new Admin<BookAuthors>();
-		Admin<BookGenres> bookGen = new Admin<BookGenres>();
-
-		List<Author> authorList = author.readAuthors();
-		List<Genre> genreList = genre.readGenres();
-		List<Publisher> pubList = pub.readPubs();
-
-		Book book = new Book();
-		BookAuthors bookAuthors = new BookAuthors();
-		BookGenres bookGenres = new BookGenres();
-
+	public static void add() { // Adds a book to the database
 		HashMap<Integer, Author> hashAuthor = new HashMap<Integer, Author>();
 		HashMap<Integer, Genre> hashGenre = new HashMap<Integer, Genre>();
 
@@ -73,19 +73,20 @@ public class editBook<T> {
 		int quit = done + 1;
 		int auth = 0;
 		int i = 0;
-
+		
 		System.out.println("Please enter the title of the book");
-		String title = scan.nextLine();
-
+		String title = scan.nextLine(); // Gets the title the user inputs
+		
+		System.out.println();
 		System.out.println("Please choose one or more Authors. Please enter the number next to the author.");
-		authorList.forEach(a -> {
+		authorList.forEach(a -> { // Prints all the authors
 			System.out.println(counter.incrementAndGet() + ") " + a.getAuthorName());
 		});
 
 		System.out.println(done + ") Done choosing authors\n" + quit + ") Quit to previous");
 		auth = BaseController.getInt(quit);
 
-		while (auth < done) {
+		while (auth < done) { // Gets all the authors the user chooses and puts them in a hash map
 			i = 1;
 			for (Author a : authorList) {
 				if (i == auth) {
@@ -97,13 +98,15 @@ public class editBook<T> {
 		}
 
 		if (auth == quit) {
+			System.out.println();
 			func(AdminInput.getFunc());
 		}
 
 		else {
+			System.out.println();
 			System.out.println("Please choose one or more Genres. Please enter the number next to the genre.");
 			counter.set(0);
-			genreList.forEach(g -> {
+			genreList.forEach(g -> { // Prints all the genres
 				System.out.println(counter.incrementAndGet() + ") " + g.getGenreName());
 			});
 			done = genreList.size() + 1;
@@ -112,7 +115,7 @@ public class editBook<T> {
 			System.out.println(done + ") Done choosing genres\n" + quit + ") Quit to previous");
 			auth = BaseController.getInt(quit);
 
-			while (auth < done) {
+			while (auth < done) { // Gets all the genres the user chooses and puts them in a hash map
 				i = 1;
 				for (Genre g : genreList) {
 					if (i == auth) {
@@ -124,13 +127,15 @@ public class editBook<T> {
 			}
 
 			if (auth == quit) {
+				System.out.println();
 				func(AdminInput.getFunc());
 			}
 
 			else {
+				System.out.println();
 				System.out.println("Please choose one Publisher. Please enter the number next to the Publisher.");
 				counter.set(0);
-				pubList.forEach(p -> {
+				pubList.forEach(p -> { // Prints all the publishers
 					System.out.println(counter.incrementAndGet() + ") " + p.getPublisherName());
 				});
 				quit = pubList.size() + 1;
@@ -139,6 +144,7 @@ public class editBook<T> {
 				auth = BaseController.getInt(quit);
 
 				if (auth == quit) {
+					System.out.println();
 					func(AdminInput.getFunc());
 				}
 
@@ -146,26 +152,14 @@ public class editBook<T> {
 					i = 1;
 
 					for (Publisher p : pubList) {
-						if (i == auth) {
+						if (i == auth) { // Gets the publisher the user chooses
 							book.setTitle(title);
 							book.setPubID(p.getPublisherID());
-							book.setBookID(bk.addBook(book));
+							bk.addBookAdmin(book, hashAuthor, hashGenre); // Sends the book info, authors, and genres and adds the book
 						}
 						i++;
 					}
-
-					for (Map.Entry<Integer, Author> element : hashAuthor.entrySet()) {
-						bookAuthors.setAuthor(element.getValue());
-						bookAuthors.setBook(book);
-						bookAuth.addBookAuthor(bookAuthors);
-					}
-
-					for (Map.Entry<Integer, Genre> element : hashGenre.entrySet()) {
-						bookGenres.setGenre(element.getValue());
-						bookGenres.setBook(book);
-						bookGen.addBookGenre(bookGenres);
-					}
-
+					System.out.println();
 					func(AdminInput.getFunc());
 				}
 			}
@@ -173,23 +167,20 @@ public class editBook<T> {
 	}
 
 	public static void update() {
-		Admin<Author> author = new Admin<Author>();
-		Admin<Genre> genre = new Admin<Genre>();
-		Admin<Publisher> pub = new Admin<Publisher>();
-		Admin<Book> bk = new Admin<Book>();
 		Admin<BookAuthors> bookAuth = new Admin<BookAuthors>();
 		Admin<BookGenres> bookGen = new Admin<BookGenres>();
 
 		List<Book> bookList = bk.readBooks();
-		List<Author> authorList = author.readAuthors();
 		List<BookAuthors> bookAuthorList = null;
 		List<BookGenres> bookGenreList = null;
-		List<Genre> genreList = genre.readGenres();
-		List<Publisher> pubList = pub.readPubs();
 
-		Book book = new Book();
 		BookAuthors bookAuthors = new BookAuthors();
 		BookGenres bookGenres = new BookGenres();
+		
+		HashMap<Integer, Author> hashAddAuthor = new HashMap<Integer, Author>();
+		HashMap<Integer, Genre> hashAddGenre = new HashMap<Integer, Genre>();
+		HashMap<Integer, BookAuthors> hashDeleteAuthor = new HashMap<Integer, BookAuthors>();
+		HashMap<Integer, BookGenres> hashDeleteGenre = new HashMap<Integer, BookGenres>();
 
 		AtomicInteger counter = new AtomicInteger();
 
@@ -217,16 +208,16 @@ public class editBook<T> {
 				}
 				i++;
 			}
-
+			System.out.println();
 			System.out.println("Please enter the new title of the book or enter 'n/a' for no change");
-			String title = scan.nextLine();
-
+			String title = scan.nextLine(); // Gets the new title of the book
+			System.out.println();
 			while (loop) {
+				System.out.println();
 				System.out.println(
-						"Would you like to edit the authors?\n1) Add authors to the book\n2) Remove authors from the book\n3) Do nothing"
+						"Would you like to edit the authors?\n1) Add authors to the book\n2) Remove authors from the book\n3) Go to next"
 								+ "\n4) Quit to previous");
 				counter.set(0);
-
 				switch (BaseController.getInt(4)) {
 				case 1: // Adding more authors to the book
 					System.out
@@ -243,19 +234,13 @@ public class editBook<T> {
 					while (auth < done) {
 						i = 1;
 						for (Author a : authorList) {
-							if (i == auth) {
-								bookAuthors.setAuthor(a);
-								bookAuthors.setBook(book);
-								bookAuth.addBookAuthor(bookAuthors);
+							if (i == auth) { // Adds the authors the user chooses to a hash map
+								hashAddAuthor.put(i, a);
 							}
 							i++;
 						}
 						auth = BaseController.getInt(quit);
 					}
-
-//					if (auth == quit) {
-//						prev = true;
-//					}
 					break;
 
 				case 2: // Removing authors from the book
@@ -274,19 +259,13 @@ public class editBook<T> {
 					while (auth < done) {
 						i = 1;
 						for (BookAuthors a : bookAuthorList) {
-							if (i == auth) {
-								bookAuthors.setAuthor(a.getAuthor());
-								bookAuthors.setBook(book);
-								bookAuth.deleteBookAuthor(bookAuthors);
+							if (i == auth) { // Adds the authors the user chooses to a hash map
+								hashDeleteAuthor.put(i, a);
 							}
 							i++;
 						}
-						auth = BaseController.getInt(quit);
+						auth = BaseController.getInt(quit); // Gets the input from the user
 					}
-
-//					if (auth == quit) {
-//						prev = true;
-//					}
 					break;
 
 				case 3: // Do nothing
@@ -300,15 +279,11 @@ public class editBook<T> {
 				}
 			}
 
-			if (prev) { // Goes to the previous menu if prev is set to true
-				func(AdminInput.getFunc());
-			}
-
-			else {
+			if (!prev) { // Goes to the previous menu if prev is set to true
 				loop = true;
 				while (loop) {
 					System.out.println(
-							"Would you like to edit the genres?\n1) Add genres to the book\n2) Remove genres from the book\n3) Do nothing"
+							"Would you like to edit the genres?\n1) Add genres to the book\n2) Remove genres from the book\n3) Go to next"
 									+ "\n4) Quit to previous");
 					counter.set(0);
 
@@ -328,19 +303,14 @@ public class editBook<T> {
 						while (auth < done) {
 							i = 1;
 							for (Genre g : genreList) {
-								if (i == auth) {
-									bookGenres.setBook(book);
-									bookGenres.setGenre(g);
-									bookGen.addBookGenre(bookGenres);
+								if (i == auth) { // Adds the genres the user chooses to a hash map
+									hashAddGenre.put(i, g);
 								}
 								i++;
 							}
 							auth = BaseController.getInt(quit);
 						}
 
-//						if (auth == quit) {
-//							prev = true;
-//						}
 						break;
 
 					case 2: // Removing genres from the book
@@ -359,20 +329,14 @@ public class editBook<T> {
 						while (auth < done) {
 							i = 1;
 							for (BookGenres g : bookGenreList) {
-								if (i == auth) {
-									bookGenres.setGenre(g.getGenre());
-									bookGenres.setBook(book);
-									bookGen.deleteBookGenre(bookGenres);
+								if (i == auth) { // Adds the genres the user chooses to a hash map
+									hashDeleteGenre.put(i, g);
 								}
 								i++;
 							}
-							auth = BaseController.getInt(quit);
+							auth = BaseController.getInt(quit); // Gets the users input
 						}
 
-//						if (auth == quit) {
-//							prev = true;
-//							loop = false;
-//						}
 						break;
 
 					case 3: // Do nothing
@@ -385,22 +349,18 @@ public class editBook<T> {
 						break;
 					}
 				}
+				
 				System.out.println();
-				if (prev) { // Goes to the previous menu if prev is set to true
-					func(AdminInput.getFunc());
-				}
-
-				else {
+				if (!prev) { // Goes to the previous menu if prev is set to true
 					System.out.println("Would you like to change the publisher?\n1) Yes\n2) No\n3) Quit to previous");
 					auth = BaseController.getInt(3);
-					if (auth == 3) {
-						func(AdminInput.getFunc());
-					} else {
+					if (auth != 3) {
 						if (auth == 1) {
 							System.out.println(
 									"Please choose one Publisher. Please enter the number next to the Publisher.");
+							
 							counter.set(0);
-							pubList.forEach(p -> {
+							pubList.forEach(p -> { // Prints the publishers
 								System.out.println(counter.incrementAndGet() + ") " + p.getPublisherName());
 							});
 							quit = pubList.size() + 1;
@@ -408,33 +368,58 @@ public class editBook<T> {
 							System.out.println(quit + ") Quit to previous");
 							auth = BaseController.getInt(quit);
 
-							if (auth == quit) {
-								func(AdminInput.getFunc());
-							}
-
-							else {
+							if (auth != quit) {
 								i = 1;
-
 								for (Publisher p : pubList) {
 									if (i == auth) {
-										book.setPubID(p.getPublisherID());
+										book.setPubID(p.getPublisherID()); // Gets the publishers id and sets it to the pubId in the book object
 									}
 									i++;
 								}
 							}
 						}
-						if (!"n/a".equals(title.toLowerCase())) {
-							book.setTitle(title);
+						
+						if (auth == 2) {
+							if (!"n/a".equals(title.toLowerCase())) {
+								book.setTitle(title);
+							}
+							bk.updateBook(book);
+							
+							for (Map.Entry<Integer, Author> element : hashAddAuthor.entrySet()) { // Adds all the authors the user chose to the book
+								bookAuthors.setAuthor(element.getValue());
+								bookAuthors.setBook(book);
+								bookAuth.addBookAuthor(bookAuthors);
+							}
+
+							for (Map.Entry<Integer, Genre> element : hashAddGenre.entrySet()) { // Adds all the genres the user chose to the book 
+								bookGenres.setGenre(element.getValue());
+								bookGenres.setBook(book);
+								bookGen.addBookGenre(bookGenres);
+							}
+							
+							for (Map.Entry<Integer, BookAuthors> element : hashDeleteAuthor.entrySet()) { // Removes all the authors the user chose
+																											// from the book
+								bookAuthors.setAuthor(element.getValue().getAuthor());
+								bookAuthors.setBook(book);
+								bookAuth.deleteBookAuthor(bookAuthors);
+							}
+
+							for (Map.Entry<Integer, BookGenres> element : hashDeleteGenre.entrySet()) { // Removes all the genres the user chose
+																										// from the book
+								bookGenres.setGenre(element.getValue().getGenre());
+								bookGenres.setBook(book);
+								bookGen.deleteBookGenre(bookGenres);
+							}
 						}
-						bk.updateBook(book);
-					}
+					} 
 				}
 			}
 		}
+		System.out.println();
 		func(AdminInput.getFunc());
 	}
 
-	public static void delete() {
+	public static void delete() { // Deletes the book from the database
 		Admin<Book> bk = new Admin<Book>();
 
 		List<Book> bookList = bk.readBooks();
@@ -444,7 +429,8 @@ public class editBook<T> {
 		int quit = 0;
 		int auth = 0;
 		int i = 1;
-
+		
+		System.out.println();
 		System.out.println("Choose a book to delete. Please enter the number next to the book");
 		bookList.forEach(b -> {
 			System.out.println(counter.incrementAndGet() + ") " + b.getTitle());
@@ -457,15 +443,16 @@ public class editBook<T> {
 		if (auth != quit) {
 			for (Book b : bookList) {
 				if (auth == i) {
-					bk.deleteBook(b);
+					bk.deleteBook(b); // Removes the chosen book from the database
 				}
 				i++;
 			}
 		}
+		System.out.println();
 		func(AdminInput.getFunc());
 	}
 
-	public static void read() {
+	public static void read() { // Prints all the books and all the data associated with it
 		Admin<Book> bk = new Admin<Book>();
 		Admin<BookAuthors> bookAuthor = new Admin<BookAuthors>();
 		Admin<BookGenres> bookGenre = new Admin<BookGenres>();
@@ -473,7 +460,7 @@ public class editBook<T> {
 
 		List<Book> bookList = bk.readBooks();
 
-		System.out.println("\n-------------------------------------------");
+		System.out.println("-------------------------------------------");
 		for (Book b : bookList) {
 			System.out.println("Title: " + b.getTitle());
 
@@ -486,10 +473,11 @@ public class editBook<T> {
 			System.out.print("Publisher: " + publisher.readPubById(b.getPubID()).get(0).getPublisherName());
 			System.out.println("\n-------------------------------------------");
 		}
+		System.out.println();
 		func(AdminInput.getFunc());
 	}
 
-	public static void readAuthors(List<BookAuthors> list) {
+	public static void readAuthors(List<BookAuthors> list) { // Prints all the authors associated with the book
 		int i = 0;
 
 		for (BookAuthors ba : list) {
@@ -502,7 +490,7 @@ public class editBook<T> {
 		System.out.println();
 	}
 
-	public static void readGenres(List<BookGenres> list) {
+	public static void readGenres(List<BookGenres> list) { // Prints all the genres associated with the book
 		int i = 0;
 
 		for (BookGenres bg : list) {

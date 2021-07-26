@@ -21,7 +21,7 @@ public abstract class BaseDAO<T> {
 		this.conn = conn;
 	}
 	
-	public Integer saveReturnPK(String sql, Object[] vals) throws ClassNotFoundException, SQLException {
+	public Integer saveReturnPK(String sql, Object[] vals) throws ClassNotFoundException, SQLException { // Adds to the database and returns the primary key
 		PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		int count = 1;
 		for(Object o : vals) {
@@ -29,15 +29,15 @@ public abstract class BaseDAO<T> {
 			count++;
 		}
 		pstmt.executeUpdate();
-		ResultSet rs = pstmt.getGeneratedKeys(); // Try this or below
-//		ResultSet rs = pstmt.executeQuery();
+		ResultSet rs = pstmt.getGeneratedKeys(); 
+
 		while (rs.next()) {
-			return rs.getInt(1); // This is either 1 or 0
+			return rs.getInt(1); 
 		}
 		return null;
 	}
 	
-	public void save(String sql, Object[] vals) throws ClassNotFoundException, SQLException {
+	public void save(String sql, Object[] vals) throws ClassNotFoundException, SQLException { // Sends the query to the database
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		int count = 1;
 		for(Object o : vals) {
@@ -47,7 +47,7 @@ public abstract class BaseDAO<T> {
 		pstmt.executeUpdate();
 	}
 	
-	public List<T> read(String sql, Object[] vals) throws ClassNotFoundException, SQLException {
+	public List<T> read(String sql, Object[] vals) throws ClassNotFoundException, SQLException { // Gets a list from the database
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		if (vals != null) {
 			int count = 1;

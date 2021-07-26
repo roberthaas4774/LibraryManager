@@ -22,7 +22,7 @@ import com.ss.library.entity.LibraryBranch;
 public class BorrowerUser<T> {
 	Util util = new Util();
 
-	public List<Borrower> readBorrowerId(int id) {
+	public List<Borrower> readBorrowerId(int id) { // Gets borrowers based on cardNo
 		Connection conn = null;
 		List<Borrower> list = null;
 		try {
@@ -47,9 +47,8 @@ public class BorrowerUser<T> {
 		return list;
 	}
 
-	public List<BookCopies> readAvailableBooks(int id) {
+	public List<BookCopies> readAvailableBooks(int id) { // Gets bookCopies based on branchId
 		Connection conn = null;
-		List<BookCopies> list = null;
 		try {
 			conn = util.getConnection();
 			BookCopiesDAO bcdao = new BookCopiesDAO(conn);
@@ -73,9 +72,8 @@ public class BorrowerUser<T> {
 		return null;
 	}
 	
-	public List<BookCopies> readCopiesById(Book b, LibraryBranch l) {
+	public List<BookCopies> readCopiesById(Book b, LibraryBranch l) { // Gets bookCopies based on bookId and branchId
 		Connection conn = null;
-		List<BookCopies> list = null;
 		try {
 			conn = util.getConnection();
 			BookCopiesDAO bcdao = new BookCopiesDAO(conn);
@@ -99,7 +97,7 @@ public class BorrowerUser<T> {
 		return null;
 	}
 
-	public void updateBookCopies(BookCopies bookC) {
+	public void updateBookCopies(BookCopies bookC) { // updates the bookCopies 
 		Connection conn = null;
 		try {
 			conn = util.getConnection();
@@ -123,7 +121,7 @@ public class BorrowerUser<T> {
 		}
 	}
 	
-	public List<BookLoans> readBookLoansById(BookLoans bookL) {
+	public List<BookLoans> readBookLoansById(BookLoans bookL) { // Returns a list of loans based on ids
 		List<BookLoans> list = null;
 		Connection conn = null;
 		try {
@@ -147,33 +145,8 @@ public class BorrowerUser<T> {
 		}
 		return null;
 	}
-	
-	public List<BookLoans> readBookLoans() {
-		List<BookLoans> list = null;
-		Connection conn = null;
-		try {
-			conn = util.getConnection();
-			BookLoansDAO bldao = new BookLoansDAO(conn);
-			list = bldao.readAllBookLoans();
-			return list;
-		} catch (Exception e) {
-			System.out.println("Could not read the Book Loans table");
-			try {
-				conn.rollback();
-			} catch (Exception e1) {
-				System.out.println("Could not rollback successfully");
-			}
-		} finally {
-			try {
-				conn.close();
-			} catch (Exception e) {
-				System.out.println("Could not close the connection successfully");
-			}
-		}
-		return null;
-	}
 
-	public boolean addBookLoans(BookLoans bookL) {
+	public boolean addBookLoans(BookLoans bookL) { // Adds a book loan
 		Connection conn = null;
 		try {
 			conn = util.getConnection();
@@ -200,7 +173,7 @@ public class BorrowerUser<T> {
 		return false;
 	}
 
-	public void updateBookLoans(BookLoans bookL) {
+	public void updateBookLoans(BookLoans bookL) { // Updates a book loan
 		Connection conn = null;
 		try {
 			conn = util.getConnection();
@@ -225,7 +198,7 @@ public class BorrowerUser<T> {
 		}
 	}
 	
-	public List<BookLoans> readLoanedBooks(int bor) {
+	public List<BookLoans> readLoanedBooks(int bor) { // Returns a list of book loans based on cardNo
 		List<BookLoans> list = null;
 		Connection conn = null;
 		try {
